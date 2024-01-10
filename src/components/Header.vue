@@ -1,6 +1,6 @@
 <template>
-  <header class="bg-gray-900 text-white">
-    <div class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
+  <header ref="header" class="bg-gray-900 text-white">
+    <div class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:items-center">
       <div class="mx-auto max-w-7xl text-center">
         <h1 class="py-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text font-extrabold text-transparent text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl">
           <slot name="headline"></slot>
@@ -38,7 +38,7 @@ export default {
   methods: {
     startSurvey() {
       window.scrollTo({
-        top: window.innerHeight,
+        top: this.$refs.header.scrollHeight,
         left: 0,
         behavior: "smooth",
       })
