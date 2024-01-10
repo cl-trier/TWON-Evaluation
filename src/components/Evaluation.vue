@@ -17,11 +17,11 @@
 
       <Button v-if="hasPrevious" :action="previous">
         <ArrowLeftIcon aria-hidden="true" class="w-8"/>
-        Previous Tweet
+        Previous Post
       </Button>
 
       <Button v-if="hasNext" :action="next">
-        Next Tweet
+        Next Post
         <ArrowRightIcon aria-hidden="true" class="w-8"/>
       </Button>
 
