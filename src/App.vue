@@ -14,7 +14,28 @@
 
   <main id="main" class="container mx-auto px-4 py-8 lg:py-12">
 
-    <Headline>Step 1: Evaluate the authenticity of posts:</Headline>
+    <Headline>Step 1: Upload your dataset:</Headline>
+
+    <Paragraph>
+      Upload a provided JSON dataset. In general, the raw data is handed out by the research group. The app assumes the
+      following data structure:
+    </Paragraph>
+
+    <div class="w-full md:w-6/12 mx-auto">
+      <vue-json-pretty :data="dataSample" class="mb-4"/>
+
+      <input
+          accept=".json"
+          class="block w-full text-sm text-slate-500 border border-slate-300 rounded-lg px-2 p-x-2.5 py-3.5 cursor-pointer bg-slate-100 file:bg-transparent file:border-0"
+          label="Data JSON Upload"
+          type="file"
+          @change="upload($event)"
+      >
+    </div>
+
+    <Divider/>
+
+    <Headline>Step 2: Evaluate the authenticity of posts:</Headline>
 
     <Paragraph>
       Categorize the authenticity of the following posts one by one. It is not obligatory to answer every sample.
@@ -22,11 +43,25 @@
       You can use the Left and Right Arrow keys inside the box to navigate.
     </Paragraph>
 
-    <Evaluation :samples="samples"/>
+    <Evaluation v-if="uploaded" :data="data"/>
+
+    <template v-if="!uploaded && !annotated">
+      <div class="w-full md:w-6/12 mx-auto bg-rose-100 text-rose-900 px-4 py-3 rounded-lg" role="alert">
+        <p class="font-bold">You have not uploaded a dataset.</p>
+        <p class="text-sm">Make sure to upload a formatted dataset provided by the researcher team.</p>
+      </div>
+    </template>
+
+    <template v-if="!uploaded && annotated">
+      <div class="w-full md:w-6/12 mx-auto bg-orange-100 text-orange-900 px-4 py-3 rounded-lg" role="alert">
+        <p class="font-bold">Your dataset is already annotated.</p>
+        <p class="text-sm">Make sure to upload a dataset containing not-annotated samples.</p>
+      </div>
+    </template>
 
     <Divider/>
 
-    <Headline>Step 2: Submit the results</Headline>
+    <Headline>Step 3: Submit the results</Headline>
 
     <Paragraph>
       After finishing the evaluation, download your data to your local file system. We save results as a plain-text
@@ -54,6 +89,9 @@
 </template>
 
 <script>
+import VueJsonPretty from 'vue-json-pretty'
+import 'vue-json-pretty/lib/styles.css'
+
 import Headline from "@/components/atoms/Headline.vue"
 import Paragraph from "@/components/atoms/Paragraph.vue"
 import Button from "@/components/atoms/Button.vue"
@@ -62,28 +100,45 @@ import Divider from "@/components/atoms/Divider.vue"
 import Header from "@/components/Header.vue"
 import Evaluation from "@/components/Evaluation.vue"
 
-import {useEvaluationStore} from '@/store'
+import {useDataStore} from '@/store'
 
-import {download_as_JSON} from "@/common"
-import samples from './data/samples.json'
+import {downloadJSON, uploadJSON} from "@/common"
+
+import data_sample from "@/assets/data_sample.json"
 
 export default {
   components: {
+    VueJsonPretty,
     Headline,
     Paragraph,
     Button,
     Divider,
     Header,
-    Evaluation
-  },
-  methods: {
-    download() {
-      download_as_JSON(useEvaluationStore().getEvaluation)
-    }
+    Evaluation,
   },
   data() {
     return {
-      samples: samples
+      data: [],
+      uploaded: false,
+      annotated: false,
+      dataSample: data_sample
+    }
+  },
+  methods: {
+    async upload(event) {
+      let data = await uploadJSON(event.target.files[0])
+      useDataStore().setData(data)
+
+      if (useDataStore().getDataRaw.length === 0) {
+        this.annotated = true
+        return
+      }
+
+      this.data = useDataStore().getDataRaw
+      this.uploaded = true
+    },
+    download() {
+      downloadJSON(useDataStore().getData)
     }
   }
 }

@@ -1,21 +1,29 @@
 import {defineStore} from 'pinia'
 
 
-export const useEvaluationStore = defineStore('evaluation', {
+export const useDataStore = defineStore('data', {
     state: () => ({
-        evaluation: {},
+        data: [],
     }),
     getters: {
-        getEvaluation: (state) => {
-            return state.evaluation
+        getData: (state) => {
+            return state.data
         },
-        getEvaluationByID: (state) => {
-            return (id) => state.evaluation[id]
+        getDataRaw: (state) => {
+            return state.data.filter(
+                (x) =>
+                    x.annotation.topic == null ||
+                    x.annotation.persona == null ||
+                    x.annotation.authenticity == null
+            )
         },
     },
     actions: {
-        setEvaluation(id, value) {
-            this.evaluation[id] = value
+        setData(data) {
+            this.data = data
+        },
+        setAnnotation(id, value) {
+            this.data.find(x => x.id === id).annotation = value
         },
     },
 })

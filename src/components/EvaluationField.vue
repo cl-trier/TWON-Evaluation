@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-slate-100 rounded-lg p-4 lg:p-8 shadow-md">
+  <div class="bg-slate-100 rounded-lg p-4 lg:p-8 border border-slate-300">
     <table class="table-auto text-md sm:text-lg mb-4">
       <tr class="text-slate-500">
         <td class="font-bold pr-4">Topic:</td>
@@ -18,18 +18,32 @@
         <td class="pt-2">{{ sample.text }}</td>
       </tr>
     </table>
-    <span class="font-bold text-slate-700 text-md sm:text-lg mb-4">Authenticity:</span>
+    <span class="font-bold text-slate-700 text-md sm:text-lg mb-4">Topic Alignment:</span>
     <div class="p-4 mb-8">
       <Slider
-          v-model="evaluation.value"
-          v-bind="evaluation"
+          v-model="topic.value"
+          v-bind="topic"
+      />
+    </div>
+    <span class="font-bold text-slate-700 text-md sm:text-lg mb-4">Persona Alignment:</span>
+    <div class="p-4 mb-8">
+      <Slider
+          v-model="persona.value"
+          v-bind="persona"
+      />
+    </div>
+    <span class="font-bold text-slate-700 text-md sm:text-lg mb-4">Overall Authenticity:</span>
+    <div class="p-4 mb-8">
+      <Slider
+          v-model="authenticity.value"
+          v-bind="authenticity"
       />
     </div>
   </div>
 </template>
 <script>
 import Slider from '@vueform/slider'
-import {useEvaluationStore} from '@/store'
+import {useDataStore} from '@/store'
 
 export default {
   name: "ReplyField",
@@ -41,17 +55,69 @@ export default {
   },
   watch: {
     sample: function () {
-      if (useEvaluationStore().getEvaluationByID(this.sample.id)) {
-        this.evaluation.value = useEvaluationStore().getEvaluationByID(this.sample.id)
+      if (
+          this.sample.annotation.topic != null &&
+          this.sample.annotation.persona != null &&
+          this.sample.annotation.authenticity != null
+      ) {
+        this.topic.value = this.sample.annotation.topic
+        this.persona.value = this.sample.annotation.persona
+        this.authenticity.value = this.sample.annotation.authenticity
       } else {
-        this.evaluation.value = 1
+        this.topic.value = 1
+        this.persona.value = 1
+        this.authenticity.value = 1
       }
     }
   },
   data() {
     return {
       reply: "",
-      evaluation: {
+      topic: {
+        min: 1,
+        max: 5,
+        value: 1,
+        tooltipPosition: 'bottom',
+        format: function (value) {
+          switch (value) {
+            case 1:
+              return 'low'
+            case 2:
+              return 'semi-low'
+            case 3:
+              return 'medium'
+            case 4:
+              return 'semi-high'
+            case 5:
+              return 'high'
+            default:
+              return 'undefined'
+          }
+        }
+      },
+      persona: {
+        min: 1,
+        max: 5,
+        value: 1,
+        tooltipPosition: 'bottom',
+        format: function (value) {
+          switch (value) {
+            case 1:
+              return 'low'
+            case 2:
+              return 'semi-low'
+            case 3:
+              return 'medium'
+            case 4:
+              return 'semi-high'
+            case 5:
+              return 'high'
+            default:
+              return 'undefined'
+          }
+        }
+      },
+      authenticity: {
         min: 1,
         max: 5,
         value: 1,
@@ -76,9 +142,13 @@ export default {
     }
   },
   updated() {
-    useEvaluationStore().setEvaluation(
+    useDataStore().setAnnotation(
         this.sample.id,
-        this.evaluation.value
+        {
+          topic: this.topic.value,
+          persona: this.persona.value,
+          authenticity: this.authenticity.value,
+        }
     )
   }
 }

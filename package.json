@@ -15,7 +15,8 @@
     "file-saver": "^2.0.5",
     "object-hash": "^3.0.0",
     "pinia": "^2.1.7",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-json-pretty": "^2.3.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",

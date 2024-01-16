@@ -1,0 +1,14 @@
+[
+  {
+    "id": "numerical_id",
+    "topic": "topic_label",
+    "style": "style_label",
+    "agent": "agent_description",
+    "text": "generated_content",
+    "annotation": {
+      "topic": null,
+      "persona": null,
+      "authenticity": null
+    }
+  }
+]

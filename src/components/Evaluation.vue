@@ -6,11 +6,11 @@
       @keyup.enter="next"
   >
 
-    <EvaluationField :sample="samples[currentItem]"/>
+    <EvaluationField :sample="data[currentItem]"/>
 
     <ProgressBar
         :currentId="currentItem"
-        :maxId="this.samples.length"
+        :maxId="data.length"
     />
 
     <div class="flex mt-4 gap-2 justify-center">
@@ -38,20 +38,28 @@ import Button from "@/components/atoms/Button.vue"
 
 export default {
   name: "Reply",
-  components: {Button, ProgressBar, ArrowRightIcon, ArrowLeftIcon, EvaluationField},
+  components: {
+    Button,
+    ProgressBar,
+    ArrowRightIcon,
+    ArrowLeftIcon,
+    EvaluationField
+  },
   props: {
-      samples: Object
+    data: Array
   },
   computed: {
     hasPrevious() {
       return this.currentItem > 0
     },
     hasNext() {
-      return this.currentItem < this.samples.length - 1
+      return this.currentItem < this.data.length - 1
     }
   },
   data() {
-    return {currentItem: 0}
+    return {
+      currentItem: 0,
+    }
   },
   methods: {
     previous() {
