@@ -7,7 +7,7 @@
       </tr>
       <tr class="text-slate-500">
         <td class="font-bold pr-4">Platform:</td>
-        <td>{{ sample.plattform }}</td>
+        <td>{{ sample.platform }}</td>
       </tr>
       <tr class="text-slate-500">
         <td class="font-bold pr-4 align-top">Persona:</td>
