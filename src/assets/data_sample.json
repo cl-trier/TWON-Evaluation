@@ -1,9 +1,9 @@
 [
   {
-    "id": "numerical_id",
+    "id": "alphanumeric_id",
     "topic": "topic_label",
-    "style": "style_label",
-    "agent": "agent_description",
+    "platform": "style_label",
+    "persona": "agent_description",
     "text": "generated_content",
     "annotation": {
       "topic": null,

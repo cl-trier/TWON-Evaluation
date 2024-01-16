@@ -6,12 +6,12 @@
         <td>{{ sample.topic }}</td>
       </tr>
       <tr class="text-slate-500">
-        <td class="font-bold pr-4">Style:</td>
-        <td>{{ sample.style }}</td>
+        <td class="font-bold pr-4">Platform:</td>
+        <td>{{ sample.plattform }}</td>
       </tr>
       <tr class="text-slate-500">
-        <td class="font-bold pr-4 align-top">Agent:</td>
-        <td class="pb-2">{{ sample.agent }}</td>
+        <td class="font-bold pr-4 align-top">Persona:</td>
+        <td class="pb-2">{{ sample.persona }}</td>
       </tr>
       <tr class="text-slate-700 border-t-2 border-slate-300">
         <td class="font-bold pr-4 align-top pt-2">Content:</td>
