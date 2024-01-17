@@ -17,8 +17,11 @@
     <Headline>Step 1: Upload your dataset:</Headline>
 
     <Paragraph>
-      Upload a provided JSON dataset. In general, the raw data is handed out by the research group. The app assumes the
-      following data structure:
+      Upload a provided JSON dataset. In general, the raw data is handed out by the research group. Note that the
+      dataset contains records for the annotation filled with None values. During the annotation process on the website,
+      you fill in those records and can download the updated dataset. The application automatically ignores already
+      annotated samples and only shows None filled records. Thus, you can stop annotating in between, download a partly
+      finished dataset, and then re-upload it for finishing. The app assumes the following data structure:
     </Paragraph>
 
     <div class="w-full md:w-6/12 mx-auto">
@@ -27,7 +30,6 @@
       <input
           accept=".json"
           class="block w-full text-sm text-slate-500 border border-slate-300 rounded-lg px-2 p-x-2.5 py-3.5 cursor-pointer bg-slate-100 file:bg-transparent file:border-0"
-          label="Data JSON Upload"
           type="file"
           @change="upload($event)"
       >
@@ -38,9 +40,11 @@
     <Headline>Step 2: Evaluate the authenticity of posts:</Headline>
 
     <Paragraph>
-      Categorize the authenticity of the following posts one by one. It is not obligatory to answer every sample.
-      --!!!-- Add annotation guidelines --!!!--
-      You can use the Left and Right Arrow keys inside the box to navigate.
+      Categorize the authenticity of the following posts one by one. We utilize a 5-step scale ranging from low (1) to
+      high (5) for the persona/topic alignment and the overall authenticity. The persona/topic alignment evaluates the
+      degree to which the content generated matches the characteristics of the persona or the platform described. The
+      overall authenticity measures the general appearance of how humane and fitting the generated content resembles a
+      human social media post. You can use the Left and Right Arrow keys inside the box to navigate.
     </Paragraph>
 
     <Evaluation v-if="uploaded" :data="data"/>
@@ -64,13 +68,13 @@
     <Headline>Step 3: Submit the results</Headline>
 
     <Paragraph>
-      After finishing the evaluation, download your data to your local file system. We save results as a plain-text
+      After,finishing the evaluation, download your data to your local file system. We save results as a plain-text
       JSON file. Thus, interested ones can examine their file and inspect the collected data. We ask not to modify the
       contents as that would complicate evaluation.
     </Paragraph>
 
     <Paragraph>
-      Finally, upload the received file to the cloud storage provided by the universities of Rhineland-Palatinate.
+      Finally, if fully annotated, upload the received file to the cloud storage provided by the universities of Rhineland-Palatinate.
       We opt for the two stages approach to ensure data transparency and limit the usage of non-education service
       providers.
     </Paragraph>
