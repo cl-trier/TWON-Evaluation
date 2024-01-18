@@ -11,11 +11,9 @@ export async function uploadJSON(file) {
 }
 
 export function downloadJSON(object) {
-    console.log(JSON.stringify(object))
-
     saveAs(
         new Blob(
-            [JSON.stringify(object)],
+            [JSON.stringify(object, null, 4)],
             {type: 'application/json'}
         ),
         Date.now() + sha1(object) + '.json'
