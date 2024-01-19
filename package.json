@@ -1,6 +1,6 @@
 {
-  "name": "collectuserreplies",
-  "version": "0.0.0",
+  "name": "twon.evaluation",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "vite",

@@ -3,9 +3,8 @@
     <slot/>
   </h3>
 </template>
-
 <script>
 export default {
-  name: "Headline"
+  name: "Headline",
 }
 </script>

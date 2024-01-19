@@ -12,7 +12,6 @@
   </div>
 </template>
 <script>
-
 export default {
   name: "ProgressBar",
   props: {
@@ -21,6 +20,11 @@ export default {
   },
   computed: {
     progress() {
+      /**
+       * Calculates the progress of the current ID in relation to the maximum ID.
+       *
+       * @return {number} The progress in percentage.
+       */
       return (this.currentId + 1) / this.maxId * 100
     }
   },

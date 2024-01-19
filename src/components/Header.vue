@@ -13,8 +13,8 @@
         <div class="py-8 flex flex-wrap justify-center gap-4">
           <button
               class="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
-              @click="startSurvey">
-            Start Survey
+              @click="skipToContent">
+            Start Annotation
           </button>
 
           <a :href="projectLink"
@@ -36,7 +36,10 @@ export default {
     projectLink: String
   },
   methods: {
-    startSurvey() {
+    skipToContent() {
+      /**
+       * Scroll the window to the bottom of the header element with a smooth behavior.
+       */
       window.scrollTo({
         top: this.$refs.header.scrollHeight,
         left: 0,

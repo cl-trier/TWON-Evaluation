@@ -42,7 +42,6 @@
     </Listbox>
   </div>
 </template>
-
 <script>
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions,} from '@headlessui/vue'
 import {CheckIcon, ChevronUpDownIcon} from '@heroicons/vue/20/solid'
@@ -66,6 +65,9 @@ export default {
     }
   },
   updated() {
+    /**
+     * Updates the state of the component.
+     */
     this.updated = this.selected !== this.options[0]
 
     if (this.updated) {

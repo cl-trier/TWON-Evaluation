@@ -26,13 +26,7 @@
 
     <div class="w-full md:w-6/12 mx-auto">
       <vue-json-pretty :data="dataSample" class="mb-4"/>
-
-      <input
-          accept=".json"
-          class="block w-full text-sm text-slate-500 border border-slate-300 rounded-lg px-2 p-x-2.5 py-3.5 cursor-pointer bg-slate-100 file:bg-transparent file:border-0"
-          type="file"
-          @change="upload($event)"
-      >
+      <FileUpload @change="upload($event)"/>
     </div>
 
     <Divider/>
@@ -47,21 +41,17 @@
       human social media post. You can use the Left and Right Arrow keys inside the box to navigate.
     </Paragraph>
 
-    <Evaluation v-if="uploaded" :data="data"/>
+    <Annotation v-if="uploaded" :data="data"/>
 
-    <template v-if="!uploaded && !annotated">
-      <div class="w-full md:w-6/12 mx-auto bg-rose-100 text-rose-900 px-4 py-3 rounded-lg" role="alert">
-        <p class="font-bold">You have not uploaded a dataset.</p>
-        <p class="text-sm">Make sure to upload a formatted dataset provided by the researcher team.</p>
-      </div>
-    </template>
+    <Alert v-if="!uploaded && !annotated" type="error">
+      <p class="font-bold">You have not uploaded a dataset.</p>
+      <p class="text-sm">Make sure to upload a formatted dataset provided by the researcher team.</p>
+    </Alert>
 
-    <template v-if="!uploaded && annotated">
-      <div class="w-full md:w-6/12 mx-auto bg-orange-100 text-orange-900 px-4 py-3 rounded-lg" role="alert">
-        <p class="font-bold">Your dataset is already annotated.</p>
-        <p class="text-sm">Make sure to upload a dataset containing not-annotated samples.</p>
-      </div>
-    </template>
+    <Alert v-if="!uploaded && annotated" type="success">
+      <p class="font-bold">Your dataset is already annotated.</p>
+      <p class="text-sm">Make sure to upload a dataset containing not-annotated samples.</p>
+    </Alert>
 
     <Divider/>
 
@@ -74,21 +64,18 @@
     </Paragraph>
 
     <Paragraph>
-      Finally, if fully annotated, upload the received file to the cloud storage provided by the universities of Rhineland-Palatinate.
+      Finally, if fully annotated, upload the received file to the cloud storage provided by the universities of
+      Rhineland-Palatinate.
       We opt for the two stages approach to ensure data transparency and limit the usage of non-education service
       providers.
     </Paragraph>
 
-    <Button :action="download">
+    <Button @click="download">
       1. Download data
     </Button>
-    <a
-        class="ml-4 underline underline-offset-8 text-gray-600"
-        href="https://seafile.rlp.net/u/d/e2a60cab32854c2d8e7a/"
-        target="_blank"
-    >
+    <ButtonLink href="https://twon-project.eu/">
       2. Upload to Cloud
-    </a>
+    </ButtonLink>
   </main>
 </template>
 
@@ -100,9 +87,12 @@ import Headline from "@/components/atoms/Headline.vue"
 import Paragraph from "@/components/atoms/Paragraph.vue"
 import Button from "@/components/atoms/Button.vue"
 import Divider from "@/components/atoms/Divider.vue"
+import Alert from "./components/atoms/Alert.vue"
+import FileUpload from "./components/atoms/FileUpload.vue"
+import ButtonLink from "./components/atoms/ButtonLink.vue"
 
 import Header from "@/components/Header.vue"
-import Evaluation from "@/components/Evaluation.vue"
+import Annotation from "@/components/Annotation.vue"
 
 import {useDataStore} from '@/store'
 
@@ -110,15 +100,19 @@ import {downloadJSON, uploadJSON} from "@/common"
 
 import data_sample from "@/assets/data_sample.json"
 
+
 export default {
   components: {
+    ButtonLink,
+    FileUpload,
+    Alert,
     VueJsonPretty,
     Headline,
     Paragraph,
     Button,
     Divider,
     Header,
-    Evaluation,
+    Annotation,
   },
   data() {
     return {
@@ -130,18 +124,26 @@ export default {
   },
   methods: {
     async upload(event) {
-      let data = await uploadJSON(event.target.files[0])
-      useDataStore().setData(data)
+      /**
+       * Uploads a file and sets the data for the component.
+       *
+       * @param {Event} event - The event object containing the file to upload.
+       */
+      const data = await uploadJSON(event.target.files[0])
 
-      if (useDataStore().getDataRaw.length === 0) {
+      if (!data.length) {
         this.annotated = true
         return
       }
 
+      useDataStore().setData(data)
       this.data = useDataStore().getDataRaw
       this.uploaded = true
     },
     download() {
+      /**
+       * Downloads JSON data.
+       */
       downloadJSON(useDataStore().getData)
     }
   }
